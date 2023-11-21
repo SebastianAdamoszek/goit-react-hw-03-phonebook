@@ -9,33 +9,41 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      contacts: [
-        { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-        { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-        { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-        { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-      ],
+      contacts: [],
       name: '',
       number: '',
       filter: '',
     };
   }
 
-  handleNameChange = e => {
+  componentDidMount() {
+    const storedContacts = localStorage.getItem('contacts');
+    if (storedContacts) {
+      this.setState({ contacts: JSON.parse(storedContacts) });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
+  handleNameChange = (e) => {
     this.setState({ name: e.target.value });
   };
 
-  handleNumberChange = e => {
+  handleNumberChange = (e) => {
     this.setState({ number: e.target.value });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const { contacts, name, number } = this.state;
 
     if (
       contacts.some(
-        contact => contact.name.toLowerCase() === name.toLowerCase()
+        (contact) => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {
       alert(`${name} is already a contact!`);
@@ -55,13 +63,13 @@ class App extends Component {
     });
   };
 
-  handleFilterChange = e => {
+  handleFilterChange = (e) => {
     this.setState({ filter: e.target.value });
   };
 
-  handleDeleteContact = id => {
+  handleDeleteContact = (id) => {
     this.setState({
-      contacts: this.state.contacts.filter(contact => contact.id !== id),
+      contacts: this.state.contacts.filter((contact) => contact.id !== id),
     });
   };
 
@@ -123,7 +131,7 @@ class App extends Component {
           <div>
             <h2 style={{ marginTop: '25px' }}>Contact list</h2>
             <ContactList
-              contacts={contacts.filter(contact =>
+              contacts={contacts.filter((contact) =>
                 contact.name.toLowerCase().includes(filter.toLowerCase())
               )}
               handleDeleteContact={this.handleDeleteContact}
@@ -134,4 +142,5 @@ class App extends Component {
     );
   }
 }
+
 export default App;
