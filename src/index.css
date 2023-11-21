@@ -57,6 +57,6 @@ ul {
 li {
   display: flex;
   align-items: center;
-  justify-content: start;
+  /* justify-content: start; */
   gap:5px;
 }
