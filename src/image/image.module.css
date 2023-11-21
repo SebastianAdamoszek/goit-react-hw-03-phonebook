@@ -1,0 +1,7 @@
+.background {
+  background: linear-gradient(90deg, rgba(0, 255, 0, 0.5),
+   rgba(255, 0, 0, 0.5)),
+    url(phoneBook.jpg);
+  background-size: 100%;
+  background-position: top left;
+}

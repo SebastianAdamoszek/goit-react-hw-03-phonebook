@@ -1,0 +1,15 @@
+.button__add {
+  margin-left: 162px;
+  transition: 200ms ease-in-out;
+  &:hover {
+    background-color: rgba(0, 128, 0, 0.7);
+    transform: scale(1.1);
+    border-radius: 10px;
+  }
+  &:active {
+    transform: scale(1.2);
+    border-radius: 30px;
+    border: 1px solid rgb(102, 102, 102);
+
+  }
+}
