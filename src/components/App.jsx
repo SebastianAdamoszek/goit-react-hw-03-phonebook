@@ -15,35 +15,46 @@ class App extends Component {
       filter: '',
     };
   }
-
+  // metody cyklu życiowego zad react-03 + sortowanie alfabetyczne
   componentDidMount() {
     const storedContacts = localStorage.getItem('contacts');
     if (storedContacts) {
-      this.setState({ contacts: JSON.parse(storedContacts) });
+      this.setState({ contacts: JSON.parse(storedContacts) }, () => {
+        this.sortContacts();
+      });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.contacts !== this.state.contacts) {
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      this.sortContacts();
     }
   }
 
-  handleNameChange = (e) => {
+  sortContacts() {
+    this.setState({
+      contacts: this.state.contacts.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      ),
+    });
+  }
+  ////////////////////////////////
+  handleNameChange = e => {
     this.setState({ name: e.target.value });
   };
 
-  handleNumberChange = (e) => {
+  handleNumberChange = e => {
     this.setState({ number: e.target.value });
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     const { contacts, name, number } = this.state;
 
     if (
       contacts.some(
-        (contact) => contact.name.toLowerCase() === name.toLowerCase()
+        contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {
       alert(`${name} is already a contact!`);
@@ -63,13 +74,13 @@ class App extends Component {
     });
   };
 
-  handleFilterChange = (e) => {
+  handleFilterChange = e => {
     this.setState({ filter: e.target.value });
   };
 
-  handleDeleteContact = (id) => {
+  handleDeleteContact = id => {
     this.setState({
-      contacts: this.state.contacts.filter((contact) => contact.id !== id),
+      contacts: this.state.contacts.filter(contact => contact.id !== id),
     });
   };
 
@@ -131,7 +142,7 @@ class App extends Component {
           <div>
             <h2 style={{ marginTop: '25px' }}>Contact list</h2>
             <ContactList
-              contacts={contacts.filter((contact) =>
+              contacts={contacts.filter(contact =>
                 contact.name.toLowerCase().includes(filter.toLowerCase())
               )}
               handleDeleteContact={this.handleDeleteContact}
